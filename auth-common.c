@@ -240,3 +240,30 @@ int can_gen_tokencode(struct openconnect_info *vpninfo,
 		return -EINVAL;
 	}
 }
+
+const char *optlist_append(struct oc_vpn_option **optlist, const char *opt,
+			   const char *val, int val_len)
+{
+	struct oc_vpn_option *new = malloc(sizeof(*new));
+	if (!new)
+		return NULL;
+
+	new->option = strdup(opt);
+	if (!new->option) {
+		free(new);
+		return NULL;
+	}
+	if (val_len >= 0)
+		new->value = strndup(val, val_len);
+	else
+		new->value = strdup(val);
+	if (!new->value) {
+		free(new->option);
+		free(new);
+		return NULL;
+	}
+	new->next = *optlist;
+	*optlist = new;
+
+	return new->value;
+}

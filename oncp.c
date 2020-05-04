@@ -65,32 +65,7 @@ static const char authpkt_tail[] = { 0xbb, 0x01, 0x00, 0x00, 0x00, 0x00 };
  * with the strings containing the information we got from the server,
  * and oc_ip_info contains const copies of those pointers. */
 
-static const char *add_option(struct openconnect_info *vpninfo, const char *opt,
-			      const char *val, int val_len)
-{
-	struct oc_vpn_option *new = malloc(sizeof(*new));
-	if (!new)
-		return NULL;
-
-	new->option = strdup(opt);
-	if (!new->option) {
-		free(new);
-		return NULL;
-	}
-	if (val_len >= 0)
-		new->value = strndup(val, val_len);
-	else
-		new->value = strdup(val);
-	if (!new->value) {
-		free(new->option);
-		free(new);
-		return NULL;
-	}
-	new->next = vpninfo->cstp_options;
-	vpninfo->cstp_options = new;
-
-	return new->value;
-}
+#define add_option(v, opt, val, len) optlist_append(&(v)->cstp_options, (opt), (val), (len))
 
 static int process_attr(struct openconnect_info *vpninfo, int group, int attr,
 			unsigned char *data, int attrlen)

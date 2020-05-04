@@ -1217,6 +1217,8 @@ int do_gen_tokencode(struct openconnect_info *vpninfo,
 int can_gen_tokencode(struct openconnect_info *vpninfo,
 		      struct oc_auth_form *form,
 		      struct oc_form_opt *opt);
+const char *optlist_append(struct oc_vpn_option **optlist, const char *opt,
+			   const char *val, int val_len);
 
 /* http.c */
 struct oc_text_buf *buf_alloc(void);
