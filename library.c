@@ -366,9 +366,18 @@ int openconnect_set_mobile_info(struct openconnect_info *vpninfo,
 				const char *mobile_device_type,
 				const char *mobile_device_uniqueid)
 {
-	STRDUP(vpninfo->mobile_platform_version, mobile_platform_version);
-	STRDUP(vpninfo->mobile_device_type, mobile_device_type);
-	STRDUP(vpninfo->mobile_device_uniqueid, mobile_device_uniqueid);
+	if (   !optlist_append(&vpninfo->id_options, "platform_version", mobile_platform_version, -1)
+	    || !optlist_append(&vpninfo->id_options, "device_type", mobile_device_type, -1)
+	    || !optlist_append(&vpninfo->id_options, "device_uniqueid", mobile_device_uniqueid, -1))
+		return -ENOMEM;
+	return 0;
+}
+
+int openconnect_set_id_option(struct openconnect_info *vpninfo,
+			      const char *opt, const char *val)
+{
+	if (!optlist_append(&vpninfo->id_options, opt, val, -1))
+		return -ENOMEM;
 
 	return 0;
 }
@@ -428,6 +437,7 @@ void openconnect_vpninfo_free(struct openconnect_info *vpninfo)
 	free_optlist(vpninfo->csd_env);
 	free_optlist(vpninfo->script_env);
 	free_optlist(vpninfo->cookies);
+	free_optlist(vpninfo->id_options);
 	free_optlist(vpninfo->cstp_options);
 	free_optlist(vpninfo->dtls_options);
 	free_split_routes(vpninfo);
@@ -468,9 +478,6 @@ void openconnect_vpninfo_free(struct openconnect_info *vpninfo)
 		unlink(vpninfo->csd_scriptname);
 		free(vpninfo->csd_scriptname);
 	}
-	free(vpninfo->mobile_platform_version);
-	free(vpninfo->mobile_device_type);
-	free(vpninfo->mobile_device_uniqueid);
 	free(vpninfo->csd_token);
 	free(vpninfo->csd_ticket);
 	free(vpninfo->csd_stuburl);
