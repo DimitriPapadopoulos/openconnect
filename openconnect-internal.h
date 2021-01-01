@@ -517,7 +517,7 @@ struct openconnect_info {
 
 	int cert_expire_warning;
 
-	struct cert_info certinfo[1];
+	struct cert_info certinfo[2];
 
 	char *cafile;
 	unsigned no_system_trust;
