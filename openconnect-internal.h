@@ -1272,6 +1272,7 @@ int xmlnode_is_named(xmlNode *xml_node, const char *name);
 int xmlnode_get_val(xmlNode *xml_node, const char *name, char **var);
 int xmlnode_get_prop(xmlNode *xml_node, const char *name, char **var);
 int xmlnode_match_prop(xmlNode *xml_node, const char *name, const char *match);
+int xmlnode_bool_or_int_value(xmlNode *node);
 int append_opt(struct oc_text_buf *body, const char *opt, const char *name);
 int append_form_opts(struct openconnect_info *vpninfo,
 		     struct oc_auth_form *form, struct oc_text_buf *body);

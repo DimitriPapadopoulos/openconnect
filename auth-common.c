@@ -80,6 +80,24 @@ int xmlnode_match_prop(xmlNode *xml_node, const char *name, const char *match)
 	return ret;
 }
 
+int xmlnode_bool_or_int_value(xmlNode *node)
+{
+	int ret = -1;
+	char *content = (char *)xmlNodeGetContent(node);
+	if (!content)
+		return -1;
+
+	if (isdigit(content[0]))
+		ret = atoi(content);
+	if (!strcasecmp(content, "yes") || !strcasecmp(content, "on"))
+		ret = 1;
+	if (!strcasecmp(content, "no") || !strcasecmp(content, "off"))
+		ret = 0;
+
+	free(content);
+	return ret;
+}
+
 int append_opt(struct oc_text_buf *body, const char *opt, const char *name)
 {
 	if (buf_error(body))
