@@ -262,7 +262,6 @@ public abstract class LibOpenConnect {
 		public String proxyPac;
 		public String gatewayAddr;
 		public int MTU;
-		public int idleTimeoutSec;
 		public bool unreachableIPv4;
 		public bool unreachableIPv6;
 
