@@ -116,6 +116,17 @@ static int set_int(struct libctx *ctx, jobject jobj, const char *name, int value
 	return 0;
 }
 
+static int set_bool(struct libctx *ctx, jobject jobj, const char *name, int value)
+{
+	jclass jcls = (*ctx->jenv)->GetObjectClass(ctx->jenv, jobj);
+	jfieldID jfld = (*ctx->jenv)->GetFieldID(ctx->jenv, jcls, name, "B");
+
+	if (!jfld)
+		return -1;
+	(*ctx->jenv)->SetBooleanField(ctx->jenv, jobj, jfld, value);
+	return 0;
+}
+
 static int set_long(struct libctx *ctx, jobject jobj, const char *name, uint64_t value)
 {
 	jclass jcls = (*ctx->jenv)->GetObjectClass(ctx->jenv, jobj);
@@ -1500,6 +1511,8 @@ JNIEXPORT jobject JNICALL Java_org_infradead_libopenconnect_LibOpenConnect_getIP
 	    set_string(ctx, jobj, "domain", ip->domain) ||
 	    set_string(ctx, jobj, "proxyPac", ip->proxy_pac) ||
 	    set_string(ctx, jobj, "gatewayAddr", ip->gateway_addr) ||
+	    set_bool(ctx, jobj, "unreachableIPv4", ip->unreachable_ipv4) ||
+	    set_bool(ctx, jobj, "unreachableIPv6", ip->unreachable_ipv6) ||
 	    set_int(ctx, jobj, "MTU", ip->mtu))
 		return NULL;
 

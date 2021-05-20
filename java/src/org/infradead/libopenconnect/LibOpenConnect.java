@@ -263,6 +263,8 @@ public abstract class LibOpenConnect {
 		public String gatewayAddr;
 		public int MTU;
 		public int idleTimeoutSec;
+		public bool unreachableIPv4;
+		public bool unreachableIPv6;
 
 		public ArrayList<String> splitDNS = new ArrayList<String>();
 		public ArrayList<String> splitIncludes = new ArrayList<String>();
